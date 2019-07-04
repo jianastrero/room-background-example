@@ -11,6 +11,7 @@ android {
     defaultConfig {
         applicationId "com.jianastrero.roombackgroundexample"
         minSdkVersion 22
+        multiDexEnabled true
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -24,11 +25,6 @@ android {
     }
     dataBinding {
         enabled true
-    }
-    kotlin {
-        experimental {
-            coroutines "enable"
-        }
     }
 }
 
@@ -50,8 +46,4 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.archLifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.archLifecycleVersion"
     kapt "androidx.lifecycle:lifecycle-compiler:$rootProject.archLifecycleVersion"
-
-    // Coroutines
-    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.coroutines"
-    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.coroutines"
 }
