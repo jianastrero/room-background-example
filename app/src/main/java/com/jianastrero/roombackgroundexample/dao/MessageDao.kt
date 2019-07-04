@@ -11,9 +11,12 @@ interface MessageDao {
     @Query("SELECT * FROM messages ORDER BY id")
     fun getAll(): LiveData<List<Message>>
 
+    @Query("SELECT * FROM messages ORDER BY id")
+    fun getAllBlocking(): List<Message>
+
     @Insert
     fun add(vararg messages: Message)
 
-    @Query("SELECT COUNT(id) FROM messages")
-    fun count(): Long
+    @Query("DELETE FROM messages")
+    fun clear();
 }

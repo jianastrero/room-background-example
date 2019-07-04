@@ -14,7 +14,4 @@ class MessageRepository(
     suspend fun insert(vararg messages: Message) {
         dao.add(*messages)
     }
-
-    @WorkerThread
-    suspend fun count() = dao.count()
 }

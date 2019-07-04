@@ -8,11 +8,11 @@ import androidx.lifecycle.viewModelScope
 import com.jianastrero.roombackgroundexample.models.Message
 import com.jianastrero.roombackgroundexample.repositories.MessageRepository
 import com.jianastrero.roombackgroundexample.room.AppDatabase
+import com.jianastrero.roombackgroundexample.util.generateRandomString
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.*
-import kotlin.random.Random
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -23,13 +23,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     var isInserting = false
 
     init {
-        repository = MessageRepository(AppDatabase.getDatabase(application).getMessageDao())
+        repository = MessageRepository(AppDatabase.getDatabase(application, viewModelScope).getMessageDao())
         messages = repository.findAll()
     }
 
     fun loopingInsert() = viewModelScope.launch(Dispatchers.IO) {
         while (isInserting) {
-            val number = repository.count() + 1
+            val number = (messages.value?.size ?: 0) + 1L
             val message = Message(
                 username = "Username $number",
                 message = generateRandomString(number),
@@ -50,14 +50,5 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         )
         if (isInserting)
             loopingInsert()
-    }
-
-    private val letters = "qwertyuiop asdfghjklzxcvbnm QWERTYUIOP ASDFGHJKLZXCVBNM"
-    private fun generateRandomString(length: Long): String {
-        var x = ""
-        val random = Random(System.currentTimeMillis() * 24)
-        for (i in 0..length)
-            x += letters[random.nextInt(letters.length)]
-        return x
     }
 }
